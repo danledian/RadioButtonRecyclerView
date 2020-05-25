@@ -1,29 +1,64 @@
-package com.hs.radiobuttonrecyclerview
+package com.hs.radiobuttonrecyclerview.utils
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.hs.radiobuttonrecyclerview.R
 
-class FullDividerItemDecoration(private val context: Context): RecyclerView.ItemDecoration() {
+class DividerItemDecoration(private val context: Context): RecyclerView.ItemDecoration() {
 
-    private var drawable: Drawable? = ColorDrawable(context.resources.getColor(android.R.color.holo_blue_bright))
-    private val dividerWidth = 2
+    private var drawable: Drawable? = ColorDrawable(context.resources.getColor(R.color.aquamarine))
+    private val dividerWidth = DensityUtils.dp2px(context, 1.5f)
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
 
         if(parent.childCount == 0){
             return
         }
-        val spanCount = getSpanCount(parent.layoutManager)
 
-        drawHorizontalLine(c, parent, spanCount)
-        drawVerticalLine(c, parent, spanCount)
+        drawLines(c, parent, getSpanCount(parent.layoutManager))
+    }
+
+    private fun drawLines(c: Canvas, parent: RecyclerView, spanCount: Int) {
+
+        for (index in 0 until parent.childCount){
+            val childView = parent.getChildAt(index)
+            if(index%spanCount == 0){
+                drawLeftLine(c, childView)
+            }
+            if(index < spanCount){
+                drawTopLine(c, childView)
+            }
+            drawRightLine(c, childView)
+            drawBottomLine(c, childView)
+        }
+    }
+
+    private fun drawLeftLine(c: Canvas, childView: View) {
+        drawable?.bounds = Rect(childView.left, childView.top, childView.left + dividerWidth, childView.bottom)
+        drawable?.draw(c)
+    }
+
+    private fun drawTopLine(c: Canvas, childView: View) {
+        drawable?.bounds = Rect(childView.left, childView.top, childView.right, childView.top + dividerWidth)
+        drawable?.draw(c)
+    }
+
+    private fun drawRightLine(c: Canvas, childView: View) {
+        val right = childView.right - dividerWidth
+        drawable?.bounds = Rect(right, childView.top, right + dividerWidth, childView.bottom)
+        drawable?.draw(c)
+    }
+
+    private fun drawBottomLine(c: Canvas, childView: View) {
+        drawable?.bounds = Rect(childView.left, childView.bottom, childView.right, childView.bottom+dividerWidth)
+        drawable?.draw(c)
     }
 
     /**
@@ -43,31 +78,6 @@ class FullDividerItemDecoration(private val context: Context): RecyclerView.Item
                 layoutParams.bottomMargin + view.bottom
             }
             drawable?.bounds = Rect(left, top, right, top + dividerWidth)
-            drawable?.draw(c)
-        }
-    }
-
-    /**
-     * 绘制垂直方向分割线
-     */
-    private fun drawVerticalLine(c: Canvas, parent: RecyclerView, spanCount: Int) {
-
-        val top = parent.paddingTop
-        val bottom  = parent.getChildAt(parent.childCount-1).bottom
-
-        Log.i("test", "spanCount:$spanCount")
-
-        for (index in 0 until spanCount+1){
-            val right = if(index == 0){
-                parent.paddingLeft
-            }else{
-                val view = parent.getChildAt(index-1)
-                Log.i("test", "view right is ${view.right}")
-                val layoutParams = view.layoutParams as RecyclerView.LayoutParams
-                layoutParams.rightMargin + view.right - dividerWidth
-            }
-            Log.i("test", "margin:$right")
-            drawable?.bounds = Rect(right, parent.paddingTop, right + dividerWidth, bottom)
             drawable?.draw(c)
         }
     }
