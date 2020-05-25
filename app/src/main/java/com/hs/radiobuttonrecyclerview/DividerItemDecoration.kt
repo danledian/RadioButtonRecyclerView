@@ -10,11 +10,12 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.hs.radiobuttonrecyclerview.utils.DensityUtils
 
 class DividerItemDecoration(private val context: Context): RecyclerView.ItemDecoration() {
 
     private var drawable: Drawable? = ColorDrawable(context.resources.getColor(R.color.aquamarine))
-    private val dividerWidth = 2
+    private val dividerWidth = DensityUtils.dp2px(context, 1.5f)
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
 
