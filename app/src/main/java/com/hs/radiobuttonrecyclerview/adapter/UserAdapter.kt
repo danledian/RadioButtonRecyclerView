@@ -1,10 +1,12 @@
-package com.hs.radiobuttonrecyclerview
+package com.hs.radiobuttonrecyclerview.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hs.radiobuttonrecyclerview.R
+import com.hs.radiobuttonrecyclerview.bean.User
 import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserAdapter(private val users: List<User>): RecyclerView.Adapter<UserAdapter.ItemViewHolder>() {
@@ -37,8 +39,12 @@ class UserAdapter(private val users: List<User>): RecyclerView.Adapter<UserAdapt
 
         private fun updateView(user: User, position: Int){
             itemView.tv_username.text = user.name
-            itemView.tv_username.setTextColor(if(position==selectedIndex) Color.WHITE else itemView.resources.getColor(R.color.aquamarine))
-            itemView.setBackgroundColor(if(position==selectedIndex) itemView.resources.getColor(R.color.aquamarine) else Color.TRANSPARENT)
+            itemView.tv_username.setTextColor(if(position==selectedIndex) Color.WHITE else itemView.resources.getColor(
+                R.color.aquamarine
+            ))
+            itemView.setBackgroundColor(if(position==selectedIndex) itemView.resources.getColor(
+                R.color.aquamarine
+            ) else Color.TRANSPARENT)
         }
 
     }
