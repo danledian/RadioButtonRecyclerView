@@ -67,10 +67,10 @@ class DividerItemDecoration(private val context: Context): RecyclerView.ItemDeco
     private fun getSpanCount(layoutManager: RecyclerView.LayoutManager?): Int {
         return when (layoutManager) {
             is GridLayoutManager -> {
-                (layoutManager as GridLayoutManager).spanCount
+                layoutManager.spanCount
             }
             is StaggeredGridLayoutManager -> {
-                (layoutManager as StaggeredGridLayoutManager).spanCount
+                layoutManager.spanCount
             }
             else -> {
                 1
