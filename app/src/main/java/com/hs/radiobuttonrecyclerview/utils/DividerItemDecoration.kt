@@ -62,27 +62,6 @@ class DividerItemDecoration(private val context: Context): RecyclerView.ItemDeco
     }
 
     /**
-     * 绘制水平方向分割线
-     */
-    private fun drawHorizontalLine(c: Canvas, parent: RecyclerView, spanCount: Int) {
-        val left = parent.paddingLeft
-        val right = parent.width - parent.paddingRight
-
-        val lineCount = parent.childCount/spanCount + (if(parent.childCount%spanCount>0) 1 else 0) + 1
-        for (index in 0 until lineCount){
-            val top = if (index == 0){
-                parent.paddingTop
-            } else {
-                val view = parent.getChildAt((index-1)*spanCount)
-                val layoutParams = view.layoutParams as RecyclerView.LayoutParams
-                layoutParams.bottomMargin + view.bottom
-            }
-            drawable?.bounds = Rect(left, top, right, top + dividerWidth)
-            drawable?.draw(c)
-        }
-    }
-
-    /**
      * 获取块数
      */
     private fun getSpanCount(layoutManager: RecyclerView.LayoutManager?): Int {
