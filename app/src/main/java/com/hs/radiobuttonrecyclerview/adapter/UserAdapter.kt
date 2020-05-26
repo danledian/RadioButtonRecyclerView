@@ -12,6 +12,14 @@ import kotlinx.android.synthetic.main.item_user.view.*
 class UserAdapter(private val users: List<User>): RecyclerView.Adapter<UserAdapter.ItemViewHolder>() {
 
     private var selectedIndex: Int? = -1
+    private var onItemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick(
+            view: View?,
+            position: Int
+        )
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
@@ -25,6 +33,10 @@ class UserAdapter(private val users: List<User>): RecyclerView.Adapter<UserAdapt
         holder.bindData(users[position], position)
     }
 
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.onItemClickListener = onItemClickListener
+    }
+
     inner class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         fun bindData(user: User, position: Int){
@@ -32,6 +44,7 @@ class UserAdapter(private val users: List<User>): RecyclerView.Adapter<UserAdapt
                 if(position != selectedIndex){
                     selectedIndex = position
                     notifyDataSetChanged()
+                    onItemClickListener?.onItemClick(it, selectedIndex!!)
                 }
             }
             updateView(user, position)
